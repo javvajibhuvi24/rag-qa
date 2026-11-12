@@ -1,10 +1,10 @@
 import numpy as np
-THRESHOLD = 0.25
+THRESHOLD = 0.60
 from sentence_transformers import SentenceTransformer
 
 from chunking import load_chunks
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer("BAAI/bge-small-en-v1.5")
 chunks = load_chunks("data", max_chars=100)
 vectors = model.encode([c["text"] for c in chunks], normalize_embeddings=True)
 
@@ -15,7 +15,7 @@ def search(query: str, k: int = 3):
     top = np.argsort(scores)[::-1][:k]
     return [(float(scores[i]), chunks[i]) for i in top]
 
-def retrieve(query: str, k: int = 2):
+def retrieve(query: str, k: int = 3):
     results = search(query, k)
     if results[0][0] < THRESHOLD:
         return []

@@ -2,7 +2,7 @@ from google import genai
 
 from retrieve import retrieve
 
-MODEL = "gemini-3.5-flash-lite"
+MODEL = "PASTE-YOUR-MODEL-ID"
 client = genai.Client()  # reads GEMINI_API_KEY from the environment
 
 
@@ -11,17 +11,22 @@ def generate(prompt: str) -> str:
     return response.text
 
 
-def answer(question: str) -> str:
+def answer_with_sources(question: str):
     results = retrieve(question)
     if not results:
-        return "I don't have that information."
+        return "I don't have that information.", []
     context = "\n".join(f"- {c['text']}" for _, c in results)
     prompt = (
-        "Answer the question using ONLY the context below. "
+        "Answer the question using ONLY the context below, in one complete sentence. "
+        "Mention only what the question asks. "
         "If the context does not contain the answer, say you don't know.\n\n"
         f"Context:\n{context}\n\nQuestion: {question}\nAnswer:"
     )
-    return generate(prompt)
+    return generate(prompt), results
+
+
+def answer(question: str) -> str:
+    return answer_with_sources(question)[0]
 
 
 if __name__ == "__main__":
