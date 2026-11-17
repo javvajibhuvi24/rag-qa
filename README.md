@@ -3,7 +3,7 @@
 A retrieval-augmented question-answering app. It answers only from a small sample
 FAQ and refuses questions the FAQ cannot answer.
 
-**Demo:** (add link after deployment)
+**Demo:** [loan-faq-rag.streamlit.app](https://loan-faq-rag.streamlit.app/) (free tier; it may take a minute to wake up)
 
 ## How it works
 
